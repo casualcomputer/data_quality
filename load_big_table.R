@@ -30,3 +30,27 @@ load_and_clean_data <- function(file_path) {
 
 # Example usage:
 # df <- load_and_clean_data("combined_file_python.csv")
+
+
+library(DBI)
+library(odbc)
+
+# Function to load a table from an ODBC connection
+load_table_from_odbc <- function(datasource_name, table_name) {
+  # Establish the ODBC connection
+  con <- dbConnect(odbc::odbc(), datasource_name)
+  
+  # Construct the SQL query
+  query <- paste0("SELECT * FROM ", table_name)
+  
+  # Fetch the table
+  output_table <- dbGetQuery(con, query)
+  
+  # Close the connection
+  dbDisconnect(con)
+  
+  return(output_table)
+}
+
+# Example usage:
+# df <- load_table_from_odbc("MyDataSource", "my_table_name")
